@@ -2700,7 +2700,17 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-//LISTEN
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Export the app for Vercel serverless functions
+export function createServer() {
+    return app;
+}
+
+// Traditional server listen (for local development and other platforms)
+if (process.env.NODE_ENV !== 'serverless') {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
+}
+
+// Default export for Vercel
+export default app;
