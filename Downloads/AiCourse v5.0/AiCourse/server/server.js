@@ -2672,6 +2672,24 @@ app.get('/api/getblogs', async (req, res) => {
     }
 });
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        message: 'Cursalo server is running',
+        timestamp: new Date().toISOString()
+    });
+});
+
+// API test endpoint
+app.get('/api/health', (req, res) => {
+    res.status(200).json({ 
+        status: 'OK', 
+        message: 'Cursalo API is working',
+        timestamp: new Date().toISOString()
+    });
+});
+
 // Serve static files from the dist directory (production)
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('../dist'));
