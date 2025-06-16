@@ -6,6 +6,12 @@ import nodemailer from 'nodemailer';
 import cors from 'cors';
 import crypto from 'crypto';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import gis from 'g-i-s';
 import youtubesearchapi from 'youtube-search-api';
 import { YoutubeTranscript } from 'youtube-transcript';
@@ -2665,6 +2671,16 @@ app.get('/api/getblogs', async (req, res) => {
         return res.json({ success: false, message: 'Internal Server Error' });
     }
 });
+
+// Serve static files from the dist directory (production)
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('../dist'));
+    
+    // Handle React Router (return all requests to React app)
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+    });
+}
 
 //LISTEN
 app.listen(PORT, () => {
