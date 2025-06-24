@@ -1,73 +1,103 @@
-//BRAND
-export const appName = import.meta.env.VITE_APP_NAME || 'Cursalo';
-export const companyName = import.meta.env.VITE_COMPANY_NAME || 'Spacester';
-export const websiteURL = import.meta.env.VITE_WEBSITE_URL || 'http://localhost:4173';
-export const serverURL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
-export const appLogo = 'https://firebasestorage.googleapis.com/v0/b/aicourse-81b42.appspot.com/o/aicouse.png?alt=media&token=7175cdbe-64b4-4fe4-bb6d-b519347ad8af';
-export const razorpayEnabled = true;
-export const paypalEnabled = true;
-export const stripeEnabled = true;
-export const paystackEnabled = true;
-export const flutterwaveEnabled = true;
+// Development/Production configuration
+const isDevelopment = import.meta.env.DEV
+const isProduction = import.meta.env.PROD
 
-//PRICING :-
+// API Base URLs
+export const API_BASE_URL = isProduction 
+  ? 'https://cursalo.vercel.app/api'  // Replace with your actual Vercel domain
+  : 'http://localhost:5173/api'
 
-//FREE 
-export const FreeType = 'Free Plan';
-export const FreeCost = 0;
-export const FreeTime = '';
+// Legacy server URL (for gradual migration)
+export const serverURL = isDevelopment 
+  ? 'http://localhost:3000'
+  : 'https://cursalo.vercel.app'
 
-//MONTHLY 
-export const MonthType = 'Monthly Plan';
-export const MonthCost = 9;
-export const MonthTime = 'month';
+// Supabase configuration
+export const SUPABASE_CONFIG = {
+  url: import.meta.env.VITE_SUPABASE_URL || 'https://bezlhkzztwijlizjeyhk.supabase.co',
+  anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlemxoa3p6dHdpamxpempleWhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcyMzk5MTIsImV4cCI6MjA2MjgxNTkxMn0.XgGMs3c8diwQX8FHbL-QZIPOT10JQALc5IF-ZR5tBqk'
+}
 
-//YEARLY 
-export const YearType = 'Yearly Plan';
-export const YearCost = 99;
-export const YearTime = 'year';
+// App configuration
+export const APP_CONFIG = {
+  name: 'Cursalo',
+  description: 'Plataforma de cursos con IA',
+  version: '2.0.0',
+  environment: isProduction ? 'production' : 'development'
+}
 
-//TESTIMONIAL
-export const review = "The AI Course Generator revolutionized my content creation process, providing accurate and relevant topics effortlessly. It's a time-saving powerhouse that enhances the quality and relevance of my courses. A must-have tool for educators seeking efficiency and impactful online learning experiences.";
-export const from = "Anam Meena Sharif";
-export const profession = 'CFO at Spacester';
-export const photoURL = 'https://firebasestorage.googleapis.com/v0/b/aicourse-81b42.appspot.com/o/aicouse.png?alt=media&token=7175cdbe-64b4-4fe4-bb6d-b519347ad8af';
+// Course categories
+export const COURSE_CATEGORIES = [
+  { value: 'ia', label: 'Inteligencia Artificial' },
+  { value: 'desarrollo-web', label: 'Desarrollo Web' },
+  { value: 'marketing-digital', label: 'Marketing Digital' },
+  { value: 'emprendimiento', label: 'Emprendimiento' },
+  { value: 'diseno', label: 'Diseño UX/UI' },
+  { value: 'data-science', label: 'Data Science' },
+  { value: 'general', label: 'General' }
+]
 
-//PAYPAL
-export const paypalPlanIdOne = "P-1EM732768S920784HMWKW3OA";
-export const paypalPlanIdTwo = "P-8T744865W27080359MWOCE5Q";
+// Course levels
+export const COURSE_LEVELS = [
+  { value: 'beginner', label: 'Principiante' },
+  { value: 'intermediate', label: 'Intermedio' },
+  { value: 'advanced', label: 'Avanzado' },
+  { value: 'expert', label: 'Experto' }
+]
 
-//RAZORPAY
-export const razorpayKeyId = "rzp_test_uqALjZHyTyuiOm";
-export const razorpayPlanIdOne = "plan_NMvvtDfznbRp6V";
-export const razorpayPlanIdTwo = "plan_NMRc9HARBQRLWA";
+// XP and Level system
+export const XP_REWARDS = {
+  COURSE_COMPLETED: 100,
+  LESSON_COMPLETED: 25,
+  COURSE_CREATED: 200,
+  REVIEW_WRITTEN: 50,
+  HELPFUL_REVIEW: 25,
+  DAILY_LOGIN: 10,
+  STREAK_BONUS: 50
+}
 
-//STRIPE
-export const stripePlanIdOne = "price_1OTo7CSDXmLtVnVeaHIHxqCj";
-export const stripePlanIdTwo = "price_1OTo7eSDXmLtVnVeBbn82U5B";
+export const LEVEL_THRESHOLDS = [
+  0,     // Level 1
+  100,   // Level 2
+  300,   // Level 3
+  600,   // Level 4
+  1000,  // Level 5
+  1500,  // Level 6
+  2100,  // Level 7
+  2800,  // Level 8
+  3600,  // Level 9
+  4500,  // Level 10
+  5500,  // Level 11+
+]
 
-//PAYSTACK
-export const paystackPlanIdOne = "PLN_ouqmm8eo6i2k9k8";
-export const paystackPlanIdTwo = "PLN_1v1xqb8io9t5lis";
-export const amountInZarOne = '170';
-export const amountInZarTwo = '1871';
+// API endpoints
+export const API_ENDPOINTS = {
+  // Auth
+  PROFILE: '/auth/profile',
+  
+  // Courses
+  COURSES: '/courses',
+  COURSE_UPLOAD: '/courses/upload',
+  
+  // Community
+  IDEA_CHAT: '/community/idea-chat',
+  REVIEWS: '/community/reviews',
+  FOLLOWS: '/community/follows',
+  
+  // Admin
+  ADMIN_COURSES: '/admin/courses',
+  ADMIN_USERS: '/admin/users'
+}
 
-//FLUTTERWAVE
-export const flutterwavePlanIdOne = "67960";
-export const flutterwavePlanIdTwo = "67961";
-export const flutterwavePublicKey = "FLWPUBK_TEST-6ee1faf6460ea587f510a024ac4c2b23-X";
-
-//MERCADOPAGO
-export const mercadopagoEnabled = true;
-export const mercadopagoPlanIdOne = "2c9380848f6e7b62018f7e9b12345678";
-export const mercadopagoPlanIdTwo = "2c9380848f6e7b62018f7e9b87654321";
-export const mercadopagoPublicKey = "TEST-12345678-1234-1234-1234-123456789012";
-
-//SOCIAL SIGNIN
-export const googleClientId = "150644331076-flt197jvuqg9ohlf6q9rsjk3e3qomjd2.apps.googleusercontent.com";
-export const facebookClientId = "8065327730213158";
-
-//SOCIAL MEDIA
-export const facebookSocialLink = "https://www.youtube.com/@spacester-codecanyon";
-export const twitterSocialLink = "https://www.youtube.com/@spacester-codecanyon";
-export const instagramSocialLink = "https://www.youtube.com/@spacester-codecanyon";
+// Default export for backward compatibility
+export default {
+  serverURL,
+  API_BASE_URL,
+  SUPABASE_CONFIG,
+  APP_CONFIG,
+  COURSE_CATEGORIES,
+  COURSE_LEVELS,
+  XP_REWARDS,
+  LEVEL_THRESHOLDS,
+  API_ENDPOINTS
+}
