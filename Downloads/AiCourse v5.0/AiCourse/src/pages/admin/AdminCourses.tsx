@@ -2,20 +2,23 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Search, MoreVertical, Edit, Trash, Eye } from 'lucide-react';
+import { PlusCircle, Search, MoreVertical, Edit, Trash, Eye, Upload } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Skeleton } from '@/components/ui/skeleton';
 import { serverURL } from '@/constants';
 import axios from 'axios';
-import { Skeleton } from '@/components/ui/skeleton';
+import CourseUploader from '@/components/CourseUploader';
 
 const AdminCourses = () => {
 
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [showUploader, setShowUploader] = useState(false);
 
   // Filtered data using memoization for better performance
   const filteredData = useMemo(() => {
@@ -23,18 +26,32 @@ const AdminCourses = () => {
     return data.filter((course) => {
       const nameMatch = course.mainTopic?.toLowerCase().includes(query);
       const userMatch = course.user?.toLowerCase().includes(query);
-      return nameMatch || userMatch;
+      const categoryMatch = course.category?.toLowerCase().includes(query);
+      const instructorMatch = course.instructor?.toLowerCase().includes(query);
+      return nameMatch || userMatch || categoryMatch || instructorMatch;
     });
   }, [data, searchQuery]);
 
-  useEffect(() => {
-    async function dashboardData() {
+  const fetchCourses = async () => {
+    setIsLoading(true);
+    try {
       const postURL = serverURL + `/api/getcourses`;
       const response = await axios.get(postURL);
       setData(response.data);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    } finally {
       setIsLoading(false);
     }
-    dashboardData();
+  };
+
+  const handleUploadSuccess = () => {
+    setShowUploader(false);
+    fetchCourses(); // Recargar los cursos después de subir uno nuevo
+  };
+
+  useEffect(() => {
+    fetchCourses();
   }, []);
 
   return (
@@ -44,6 +61,10 @@ const AdminCourses = () => {
           <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
           <p className="text-muted-foreground mt-1">Manage your course catalog</p>
         </div>
+        <Button onClick={() => setShowUploader(true)} className="flex items-center gap-2">
+          <Upload className="h-4 w-4" />
+          Subir Curso JSON
+        </Button>
       </div>
 
       <Card className="border-border/50">
@@ -68,8 +89,10 @@ const AdminCourses = () => {
               <TableRow>
                 <TableHead>Title</TableHead>
                 <TableHead>Type</TableHead>
+                <TableHead>Category</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>User</TableHead>
+                <TableHead>Date</TableHead>
               </TableRow>
             </TableHeader>
             {isLoading ?
@@ -87,14 +110,6 @@ const AdminCourses = () => {
                   <TableCell>
                     <Skeleton className="h-5 w-24" />
                   </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <Skeleton className="h-5 w-24" />
-                  </TableCell>
-                  <TableCell>
-                    <Skeleton className="h-5 w-24" />
-                  </TableCell>
                   <TableCell>
                     <Skeleton className="h-5 w-24" />
                   </TableCell>
@@ -115,8 +130,40 @@ const AdminCourses = () => {
                   <TableCell>
                     <Skeleton className="h-5 w-24" />
                   </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
+                  <TableCell>
+                    <Skeleton className="h-5 w-24" />
+                  </TableCell>
                   <TableCell>
                     <Skeleton className="h-5 w-24" />
                   </TableCell>
@@ -135,11 +182,31 @@ const AdminCourses = () => {
               <TableBody>
                 {filteredData.map((course) => (
                   <TableRow key={course._id}>
-                    <TableCell className="font-medium">{course.mainTopic}</TableCell>
+                    <TableCell className="font-medium">
+                      <div className="flex flex-col">
+                        <span>{course.mainTopic}</span>
+                        {course.isJsonCourse && course.instructor && (
+                          <span className="text-xs text-muted-foreground">
+                            Por: {course.instructor}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
-                      <Badge variant={course.type !== 'text & image course' ? 'default' : 'outline'}>
-                        {course.type !== 'text & image course' ? 'Video' : 'Image'}
+                      <Badge variant={
+                        course.type === 'json_course' ? 'default' : 
+                        course.type !== 'text & image course' ? 'secondary' : 'outline'
+                      }>
+                        {course.type === 'json_course' ? 'JSON Course' : 
+                         course.type !== 'text & image course' ? 'Video' : 'Image'}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {course.category ? (
+                        <Badge variant="outline">{course.category}</Badge>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Badge variant={course.completed === true ? 'default' : 'secondary'}>
@@ -147,12 +214,15 @@ const AdminCourses = () => {
                       </Badge>
                     </TableCell>
                     <TableCell>{course.user}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {course.date ? new Date(course.date).toLocaleDateString('es-ES') : '-'}
+                    </TableCell>
                   </TableRow>
                 ))}
 
                 {filteredData.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
+                    <TableCell colSpan={6} className="text-center py-8">
                       <div className="flex flex-col items-center justify-center text-muted-foreground">
                         <Search className="h-8 w-8 mb-2" />
                         <p>No courses match your search criteria</p>
@@ -165,6 +235,16 @@ const AdminCourses = () => {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Modal para subir curso JSON */}
+      <Dialog open={showUploader} onOpenChange={setShowUploader}>
+        <DialogContent className="max-w-none w-[95vw] max-h-[90vh] overflow-y-auto">
+          <CourseUploader 
+            onUploadSuccess={handleUploadSuccess}
+            onClose={() => setShowUploader(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
