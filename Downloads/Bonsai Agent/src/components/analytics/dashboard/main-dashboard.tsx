@@ -67,7 +67,18 @@ export function MainDashboard() {
     isConnected 
   } = useRealTimeAnalytics('user-123', 'session-456', {}, { autoStart: true });
   
-  const { socket } = useWebSocket();
+  const { client } = useWebSocket({
+    url: process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'ws://localhost:3001',
+    auth: {
+      token: 'demo-token',
+      userId: 'user-123',
+      sessionId: 'session-456',
+      expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+    },
+    reconnect: { attempts: 5, delay: 1000, maxDelay: 10000 },
+    heartbeat: { interval: 30000, timeout: 5000 },
+    rateLimit: { maxRequests: 60, windowMs: 60000, skipSuccessfulRequests: false }
+  });
 
   const [dashboardStats, setDashboardStats] = useState<DashboardStats>({
     totalQuestions: 0,
@@ -87,18 +98,18 @@ export function MainDashboard() {
     loadDashboardData();
     
     // Set up real-time updates
-    if (socket) {
-      socket.on('analytics:update', handleAnalyticsUpdate);
-      socket.on('analytics:performance', handlePerformanceUpdate);
-      socket.on('analytics:progress', handleProgressUpdate);
+    if (client) {
+      client.on('analytics:update', handleAnalyticsUpdate);
+      client.on('analytics:performance', handlePerformanceUpdate);
+      client.on('analytics:progress', handleProgressUpdate);
       
       return () => {
-        socket.off('analytics:update', handleAnalyticsUpdate);
-        socket.off('analytics:performance', handlePerformanceUpdate);
-        socket.off('analytics:progress', handleProgressUpdate);
+        client.off('analytics:update', handleAnalyticsUpdate);
+        client.off('analytics:performance', handlePerformanceUpdate);
+        client.off('analytics:progress', handleProgressUpdate);
       };
     }
-  }, [socket]);
+  }, [client]);
 
   const loadDashboardData = async () => {
     try {

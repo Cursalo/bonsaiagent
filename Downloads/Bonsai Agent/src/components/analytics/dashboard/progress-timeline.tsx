@@ -171,7 +171,7 @@ export function ProgressTimeline({ skillMastery, timeRange }: ProgressTimelinePr
         progress: 100,
         importance: 'medium',
         metadata: {
-          studyTime: 840
+          timeSpent: 840
         }
       },
       {

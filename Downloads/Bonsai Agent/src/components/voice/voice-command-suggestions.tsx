@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { MessageSquare, Lightbulb, Strategy, Clock, ArrowRight, Help } from 'lucide-react';
+import { MessageSquare, Lightbulb, TrendingUp, Clock, ArrowRight, HelpCircleCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -54,7 +54,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       text: "I need help with this question",
       intent: 'request_hint',
       category: 'hints',
-      icon: Help,
+      icon: HelpCircle,
       description: "Request specific help for the current problem",
       priority: 9
     },
@@ -114,7 +114,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       text: "What strategy should I use?",
       intent: 'request_strategy',
       category: 'strategies',
-      icon: Strategy,
+      icon: TrendingUp,
       description: "Get strategic advice for solving the problem",
       priority: 10
     },
@@ -122,7 +122,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       text: "How should I approach this?",
       intent: 'request_strategy',
       category: 'strategies',
-      icon: Strategy,
+      icon: TrendingUp,
       description: "Learn the best approach for this type of question",
       priority: 9
     },
@@ -130,7 +130,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       text: "What's the fastest way to solve this?",
       intent: 'request_strategy',
       category: 'strategies',
-      icon: Strategy,
+      icon: TrendingUp,
       description: "Find efficient solving methods",
       priority: 8
     },
@@ -138,7 +138,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       text: "Should I use elimination here?",
       intent: 'request_strategy',
       category: 'strategies',
-      icon: Strategy,
+      icon: TrendingUp,
       description: "Get advice on using process of elimination",
       priority: 7
     },
@@ -186,7 +186,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       // Math-specific suggestions
       if (context.skillAreas.includes('algebra') || context.skillAreas.includes('math')) {
         contextual.push({
-          text: "Help me solve this equation",
+          text: "HelpCircle me solve this equation",
           intent: 'request_hint',
           category: 'hints',
           icon: Lightbulb,
@@ -210,7 +210,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
       // Reading comprehension suggestions
       if (context.skillAreas.includes('reading')) {
         contextual.push({
-          text: "Help me understand this passage",
+          text: "HelpCircle me understand this passage",
           intent: 'request_explanation',
           category: 'explanations',
           icon: MessageSquare,
@@ -225,7 +225,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
           text: "What should I prioritize now?",
           intent: 'request_strategy',
           category: 'strategies',
-          icon: Strategy,
+          icon: TrendingUp,
           description: "Get time management advice",
           priority: 15
         });
@@ -237,7 +237,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
           text: "This seems really difficult",
           intent: 'report_confusion',
           category: 'hints',
-          icon: Help,
+          icon: HelpCircle,
           description: "Express difficulty and get support",
           priority: 11
         });
@@ -325,7 +325,7 @@ export const VoiceCommandSuggestions: React.FC<VoiceCommandSuggestionsProps> = (
     },
     strategies: {
       label: 'Strategies',
-      icon: Strategy,
+      icon: TrendingUp,
       description: 'Learn solving techniques'
     },
     controls: {

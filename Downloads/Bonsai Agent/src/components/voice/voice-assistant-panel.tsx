@@ -186,15 +186,20 @@ export const VoiceAssistantPanel: React.FC<VoiceAssistantPanelProps> = ({
 
           <div className="flex items-center space-x-1">
             {/* Settings button */}
-            <Tooltip content="Voice settings">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowSettings(!showSettings)}
-              >
-                <Settings className="h-4 w-4" />
-              </Button>
-            </Tooltip>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowSettings(!showSettings)}
+                  >
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Voice settings</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             
             {/* Stop session button */}
             {session && (
