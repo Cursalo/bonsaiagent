@@ -1,0 +1,111 @@
+{
+  "name": "bonsai-sat-platform",
+  "version": "1.0.0",
+  "description": "Comprehensive SAT prep platform for adult learners",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "lint:fix": "turbo lint -- --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "test": "turbo test",
+    "type-check": "turbo type-check",
+    "clean": "turbo clean",
+    "prepare": "husky install",
+    
+    "db:generate": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > packages/database/types/supabase.ts",
+    "db:reset": "supabase db reset",
+    "db:migrate": "supabase migration up",
+    "db:health-check": "node infrastructure/scripts/db-health-check.js",
+    "db:backup": "node infrastructure/scripts/db-backup.js",
+    "db:rollback": "supabase migration down",
+    
+    "desktop:dev": "cd apps/desktop && npm run dev",
+    "desktop:build": "cd apps/desktop && npm run build",
+    "web:dev": "cd apps/web && npm run dev",
+    "web:build": "cd apps/web && npm run build",
+    
+    "test:unit": "jest --config tests/jest.config.js --testPathPattern=unit",
+    "test:integration": "jest --config tests/jest.config.js --testPathPattern=integration",
+    "test:components": "jest --config tests/jest.config.js --testPathPattern=components",
+    "test:coverage": "jest --config tests/jest.config.js --coverage",
+    "test:watch": "jest --config tests/jest.config.js --watch",
+    "test:ci": "jest --config tests/jest.config.js --ci --coverage --watchAll=false",
+    
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:e2e:firefox": "playwright test --project=firefox",
+    "test:e2e:webkit": "playwright test --project=webkit",
+    "test:e2e:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:e2e:critical": "playwright test --project=critical-chrome --project=critical-firefox --project=critical-safari",
+    "test:e2e:production": "BASE_URL=https://bonsaisat.com playwright test",
+    
+    "test:a11y": "playwright test --project=accessibility",
+    "test:visual": "playwright test --project=visual",
+    "test:performance": "playwright test --project=performance",
+    "test:api": "playwright test --project=api",
+    "test:wcag": "node tests/scripts/wcag-compliance.js",
+    
+    "test:load": "artillery run tests/performance/load-test.yml",
+    "test:websocket-performance": "node tests/performance/websocket-load.js",
+    "test:websocket-load": "node tests/performance/websocket-stress.js",
+    "test:api-performance": "node tests/performance/api-benchmark.js",
+    "test:production-smoke": "node tests/scripts/production-smoke.js",
+    
+    "deploy": "infrastructure/scripts/deploy.sh",
+    "deploy:staging": "infrastructure/scripts/deploy.sh -e staging",
+    "deploy:production": "infrastructure/scripts/deploy.sh -e production",
+    "deploy:rollback": "infrastructure/scripts/deploy.sh --rollback",
+    
+    "docker:build": "docker-compose -f infrastructure/docker/docker-compose.yml build",
+    "docker:up": "docker-compose -f infrastructure/docker/docker-compose.yml up",
+    "docker:down": "docker-compose -f infrastructure/docker/docker-compose.yml down",
+    "docker:logs": "docker-compose -f infrastructure/docker/docker-compose.yml logs",
+    
+    "security:scan": "npm audit && snyk test",
+    "security:fix": "npm audit fix && snyk wizard",
+    "license:check": "license-checker --production --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD'",
+    
+    "monitoring:setup": "node infrastructure/scripts/setup-monitoring.js",
+    "health:check": "node infrastructure/scripts/health-check.js",
+    
+    "extension:build": "cd apps/browser-extension && npm run build:all",
+    "extension:test": "cd apps/browser-extension && npm run test:all",
+    "extension:publish": "cd apps/browser-extension && npm run publish:all"
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.12.4",
+    "turbo": "^1.12.4",
+    "typescript": "^5.4.2",
+    "@types/node": "^20.11.24",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "prettier": "^3.2.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
+  }
+}
