@@ -64,10 +64,8 @@ export function MainDashboard() {
   
   const { 
     analytics, 
-    performance, 
-    progress, 
     isConnected 
-  } = useRealTimeAnalytics();
+  } = useRealTimeAnalytics('user-123', 'session-456', {}, { autoStart: true });
   
   const { socket } = useWebSocket();
 
@@ -383,7 +381,7 @@ export function MainDashboard() {
 
           <TabsContent value="performance" className="space-y-6">
             <LearningVelocityChart 
-              data={performance?.trends || { daily: [], weekly: [], monthly: [] }}
+              data={analytics.performance?.trends || { daily: [], weekly: [], monthly: [] }}
               timeRange={timeRange}
             />
             <StudyTimeAnalytics 
