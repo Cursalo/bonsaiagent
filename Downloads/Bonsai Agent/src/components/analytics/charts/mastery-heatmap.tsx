@@ -12,12 +12,6 @@ import {
   Download,
   Info
 } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 interface MasteryHeatmapProps {
   skillData: {
@@ -165,23 +159,6 @@ export function MasteryHeatmap({ skillData, timeRange }: MasteryHeatmapProps) {
     return skillGroup ? skillGroup.topics.map(t => ({ skill: selectedSkill, topic: t })) : [];
   };
 
-  const formatCellTooltip = (cell: HeatmapCell) => {
-    return (
-      <div className="space-y-1">
-        <div className="font-medium">{cell.skill} - {cell.topic}</div>
-        <div className="text-sm">Date: {new Date(cell.date).toLocaleDateString()}</div>
-        <div className="text-sm">Mastery: {Math.round(cell.mastery)}%</div>
-        <div className="text-sm">Confidence: {Math.round(cell.confidence * 100)}%</div>
-        <div className="text-sm">Questions: {cell.questionsAnswered}</div>
-        <div className="text-sm">Time: {cell.timeSpent}min</div>
-        {cell.improvement !== 0 && (
-          <div className={`text-sm ${cell.improvement > 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {cell.improvement > 0 ? '+' : ''}{cell.improvement.toFixed(1)}% change
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const exportHeatmapData = () => {
     const csvContent = [
@@ -224,7 +201,7 @@ export function MasteryHeatmap({ skillData, timeRange }: MasteryHeatmapProps) {
   const weeksToShow = getWeeksToShow();
 
   return (
-    <TooltipProvider>
+    <div>
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -264,17 +241,12 @@ export function MasteryHeatmap({ skillData, timeRange }: MasteryHeatmapProps) {
               <span className="text-sm font-medium">Mastery Level:</span>
               <div className="flex items-center space-x-1">
                 {MASTERY_COLORS.map((color, index) => (
-                  <Tooltip key={index}>
-                    <TooltipTrigger>
-                      <div
-                        className="w-4 h-4 rounded border"
-                        style={{ backgroundColor: color.color }}
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{color.label} ({color.min}-{color.max}%)</p>
-                    </TooltipContent>
-                  </Tooltip>
+                  <div
+                    key={index}
+                    className="w-4 h-4 rounded border"
+                    style={{ backgroundColor: color.color }}
+                    title={`${color.label} (${color.min}-${color.max}%)`}
+                  />
                 ))}
               </div>
             </div>
@@ -344,34 +316,29 @@ export function MasteryHeatmap({ skillData, timeRange }: MasteryHeatmapProps) {
                         const opacity = getConfidenceOpacity(cellData.confidence);
                         
                         return (
-                          <Tooltip key={weekIndex}>
-                            <TooltipTrigger>
-                              <div
-                                className="h-8 rounded border cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all"
-                                style={{
-                                  backgroundColor: colorConfig.color,
-                                  opacity,
-                                  borderColor: selectedCell?.skill === skill && 
-                                              selectedCell?.topic === topic && 
-                                              selectedCell?.week === weekIndex 
-                                              ? '#3b82f6' : '#e5e7eb'
-                                }}
-                                onClick={() => setSelectedCell(cellData)}
+                          <div
+                            key={weekIndex}
+                            className="h-8 rounded border cursor-pointer hover:ring-2 hover:ring-blue-300 transition-all"
+                            style={{
+                              backgroundColor: colorConfig.color,
+                              opacity,
+                              borderColor: selectedCell?.skill === skill && 
+                                          selectedCell?.topic === topic && 
+                                          selectedCell?.week === weekIndex 
+                                          ? '#3b82f6' : '#e5e7eb'
+                            }}
+                            onClick={() => setSelectedCell(cellData)}
+                            title={`${cellData.skill} - ${cellData.topic}: ${Math.round(cellData.mastery)}% mastery, ${Math.round(cellData.confidence * 100)}% confidence`}
+                          >
+                            <div className="h-full w-full flex items-center justify-center">
+                              <span 
+                                className="text-xs font-medium"
+                                style={{ color: colorConfig.textColor }}
                               >
-                                <div className="h-full w-full flex items-center justify-center">
-                                  <span 
-                                    className="text-xs font-medium"
-                                    style={{ color: colorConfig.textColor }}
-                                  >
-                                    {Math.round(cellData.mastery)}
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              {formatCellTooltip(cellData)}
-                            </TooltipContent>
-                          </Tooltip>
+                                {Math.round(cellData.mastery)}
+                              </span>
+                            </div>
+                          </div>
                         );
                       })}
                     </div>
@@ -467,6 +434,6 @@ export function MasteryHeatmap({ skillData, timeRange }: MasteryHeatmapProps) {
           </div>
         </CardContent>
       </Card>
-    </TooltipProvider>
+    </div>
   );
 }

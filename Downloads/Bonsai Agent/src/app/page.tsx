@@ -19,43 +19,59 @@ import {
   CreditCard,
   BookOpen,
   Target,
-  TrendingUp
+  TrendingUp,
+  Play,
+  Award,
+  Clock,
+  Lightbulb
 } from 'lucide-react'
 import Link from 'next/link'
+import { LandingHeader } from '@/components/landing/landing-header'
+import { LandingFooter } from '@/components/landing/landing-footer'
 
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
+      <LandingHeader />
       {/* Hero Section */}
       <section className="flex-1 flex items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
         <div className="container max-w-6xl text-center">
-          <Badge variant="secondary" className="mb-6">
-            🚀 Complete SAT Prep Ecosystem
-          </Badge>
+          <div className="flex items-center justify-center mb-6">
+            <Badge variant="secondary" className="bg-green-100 text-green-800 border-green-200">
+              ✨ #1 AI-Powered SAT Prep Platform
+            </Badge>
+          </div>
           
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-            The Future of
-            <span className="text-blue-600 dark:text-blue-400"> SAT Preparation </span>
-            is Here
+            Increase Your SAT Score by
+            <span className="text-blue-600 dark:text-blue-400"> 150+ Points </span>
+            with AI
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-            A comprehensive platform combining AI-powered tutoring, browser extension for real-time help, 
-            advanced analytics dashboard, and personalized study plans. Everything you need in one place.
+            The only SAT prep platform that combines real-time AI tutoring, browser extension assistance, 
+            and advanced analytics. Get personalized help exactly when you need it, track your progress in real-time, 
+            and achieve your target score faster than ever before.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="text-lg px-8" asChild>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <Button size="lg" className="text-lg px-8 bg-blue-600 hover:bg-blue-700" asChild>
               <Link href="/download">
-                Get Started - $19/month
+                <Download className="mr-2 h-5 w-5" />
+                Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8" asChild>
               <Link href="/demo">
+                <Play className="mr-2 h-5 w-5" />
                 Watch Demo
               </Link>
             </Button>
+          </div>
+          
+          <div className="text-sm text-muted-foreground mb-12">
+            ✓ 7-day free trial • ✓ No credit card required • ✓ Cancel anytime
           </div>
 
           {/* Stats */}
@@ -470,6 +486,8 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      <LandingFooter />
     </div>
   )
 }

@@ -8,12 +8,10 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { 
-  useWebSocket, 
-  useRealTimeRecommendations, 
-  useRealTimeAnalytics, 
-  useLiveCoaching 
-} from '@/hooks';
+import { useWebSocket } from '@/hooks/useWebSocket';
+import { useRealTimeRecommendations } from '@/hooks/useRealTimeRecommendations';
+import { useRealTimeAnalytics } from '@/hooks/useRealTimeAnalytics';
+import { useLiveCoaching } from '@/hooks/useLiveCoaching';
 import { 
   Activity, 
   Brain, 
@@ -24,7 +22,7 @@ import {
   Wifi, 
   WifiOff,
   Lightbulb,
-  Strategy,
+  TrendingUp as Strategy,
   BarChart3
 } from 'lucide-react';
 

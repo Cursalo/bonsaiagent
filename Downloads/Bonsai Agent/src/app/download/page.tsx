@@ -20,6 +20,8 @@ import { useSession, signIn } from 'next-auth/react'
 import { loadStripe } from '@stripe/stripe-js'
 import { supabase } from '@/lib/auth'
 import { toast } from 'sonner'
+import { LandingHeader } from '@/components/landing/landing-header'
+import { LandingFooter } from '@/components/landing/landing-footer'
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
@@ -181,7 +183,9 @@ export default function DownloadPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="flex flex-col min-h-screen">
+      <LandingHeader />
+      <div className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Hero Section */}
       <div className="container mx-auto px-4 pt-20 pb-16">
         <div className="text-center max-w-4xl mx-auto">
@@ -389,6 +393,8 @@ export default function DownloadPage() {
           </p>
         </div>
       </div>
+      </div>
+      <LandingFooter />
     </div>
   )
 }

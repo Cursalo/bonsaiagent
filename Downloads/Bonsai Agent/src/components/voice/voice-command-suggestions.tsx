@@ -6,7 +6,7 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { MessageSquare, Lightbulb, TrendingUp, Clock, ArrowRight, HelpCircleCircle } from 'lucide-react';
+import { MessageSquare, Lightbulb, TrendingUp, Clock, ArrowRight, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

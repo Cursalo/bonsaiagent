@@ -8,6 +8,8 @@ export interface ScreenActivity {
     newUrl?: string
     duration?: number
     applicationName?: string
+    violations?: string
+    [key: string]: any
   }
 }
 
@@ -189,7 +191,7 @@ class ScreenMonitor {
 
     if (suspiciousKeys.includes(event.key)) {
       this.logActivity('suspicious_activity', { 
-        details: `Suspicious key pressed: ${event.key}` 
+        applicationName: `Suspicious key pressed: ${event.key}` 
       })
       event.preventDefault()
       return
@@ -204,7 +206,7 @@ class ScreenMonitor {
 
       if (ctrlMatch && shiftMatch && cmdMatch && altMatch && keyMatch) {
         this.logActivity('suspicious_activity', { 
-          details: `Suspicious key combination: ${JSON.stringify(combo)}` 
+          applicationName: `Suspicious key combination: ${JSON.stringify(combo)}`
         })
         event.preventDefault()
         break
@@ -217,7 +219,7 @@ class ScreenMonitor {
     
     // Only log if cursor leaves the window area
     this.logActivity('suspicious_activity', { 
-      details: 'Mouse left test window area' 
+      applicationName: 'Mouse left test window area'
     })
   }
 
@@ -225,7 +227,7 @@ class ScreenMonitor {
     if (!this.isMonitoring) return
 
     this.logActivity('suspicious_activity', { 
-      details: 'Attempted to navigate away from test' 
+      applicationName: 'Attempted to navigate away from test'
     })
 
     // Show confirmation dialog
@@ -238,7 +240,7 @@ class ScreenMonitor {
     if (!this.isMonitoring) return
 
     this.logActivity('suspicious_activity', { 
-      details: 'Navigation event detected',
+      applicationName: 'Navigation event detected',
       newUrl: window.location.href 
     })
   }
@@ -284,7 +286,7 @@ class ScreenMonitor {
       violations.totalViolationTime > maxViolationTime
     ) {
       this.logActivity('suspicious_activity', { 
-        details: 'Violation thresholds exceeded - potential academic dishonesty' 
+        applicationName: 'Violation thresholds exceeded - potential academic dishonesty'
       })
 
       // Notify listeners of threshold violation
@@ -293,7 +295,7 @@ class ScreenMonitor {
           timestamp: Date.now(),
           type: 'suspicious_activity',
           details: { 
-            details: 'THRESHOLD_VIOLATION',
+            applicationName: 'THRESHOLD_VIOLATION',
             violations: JSON.stringify(violations)
           }
         })
@@ -309,7 +311,7 @@ class ScreenMonitor {
       riskLevel: 'low' | 'medium' | 'high'
       recommendation: string
     }
-    details: {
+    violationDetails: {
       focusLosses: number
       tabSwitches: number
       suspiciousActivities: number
@@ -342,7 +344,7 @@ class ScreenMonitor {
         riskLevel,
         recommendation,
       },
-      details: {
+      violationDetails: {
         focusLosses: violations.focusLossCount,
         tabSwitches: violations.tabSwitchCount,
         suspiciousActivities: violations.suspiciousActivityCount,

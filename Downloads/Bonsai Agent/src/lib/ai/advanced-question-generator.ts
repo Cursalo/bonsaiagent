@@ -426,9 +426,9 @@ export class AdvancedQuestionGenerator {
     ])
 
     return {
-      learningStyleAdaptations: [...new Set(allAdaptations)],
-      motivationalElements: [...new Set(allMotivationalElements)],
-      cognitiveSupports: [...new Set(allCognitiveSupports)]
+      learningStyleAdaptations: Array.from(new Set(allAdaptations)),
+      motivationalElements: Array.from(new Set(allMotivationalElements)),
+      cognitiveSupports: Array.from(new Set(allCognitiveSupports))
     }
   }
 

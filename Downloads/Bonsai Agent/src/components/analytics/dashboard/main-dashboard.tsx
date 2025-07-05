@@ -24,10 +24,10 @@ import {
 } from 'lucide-react';
 
 import { PerformanceOverview } from './performance-overview';
-import { SkillMasteryGrid } from './skill-mastery-grid';
+// import { SkillMasteryGrid } from './skill-mastery-grid';
 import { ProgressTimeline } from './progress-timeline';
-import { MasteryHeatmap } from '../charts/mastery-heatmap';
-import { LearningVelocityChart } from '../charts/learning-velocity-chart';
+// import { MasteryHeatmap } from '../charts/mastery-heatmap';
+// import { LearningVelocityChart } from '../charts/learning-velocity-chart';
 import { ScorePredictionChart } from '../charts/score-prediction-chart';
 import { StudyTimeAnalytics } from '../charts/study-time-analytics';
 import { AIInsightsPanel } from '../insights/ai-insights-panel';
@@ -377,7 +377,7 @@ export function MainDashboard() {
           </TabsContent>
 
           <TabsContent value="skills" className="space-y-6">
-            <SkillMasteryGrid 
+            {/* <SkillMasteryGrid 
               skills={skillMastery}
               onSkillClick={(skill) => {
                 // Navigate to detailed skill analysis
@@ -387,14 +387,24 @@ export function MainDashboard() {
             <MasteryHeatmap 
               skillData={skillMastery}
               timeRange={timeRange}
-            />
+            /> */}
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-muted-foreground">Skills analysis coming soon...</p>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="performance" className="space-y-6">
-            <LearningVelocityChart 
+            {/* <LearningVelocityChart 
               data={analytics.performance?.trends || { daily: [], weekly: [], monthly: [] }}
               timeRange={timeRange}
-            />
+            /> */}
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-muted-foreground">Learning velocity chart coming soon...</p>
+              </CardContent>
+            </Card>
             <StudyTimeAnalytics 
               studyTime={dashboardStats.studyTime}
               timeRange={timeRange}

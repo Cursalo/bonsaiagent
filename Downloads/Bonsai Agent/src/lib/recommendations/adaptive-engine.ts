@@ -252,7 +252,21 @@ export class BonsaiAdaptiveRecommendationEngine {
       const priorityAreas = await this.identifyPriorityAreas(studentState, learningContext, studentProfile)
       
       // Step 4: Select optimal recommendation strategy
-      const strategy = await this.selectRecommendationStrategy(learningAnalysis, zpdData, priorityAreas)
+      // const strategy = await this.selectRecommendationStrategy(learningAnalysis, zpdData, priorityAreas)
+      const strategy: RecommendationStrategy = {
+        name: 'adaptive',
+        description: 'Default adaptive strategy',
+        weights: {
+          masteryPriority: 0.3,
+          difficultyOptimization: 0.25,
+          timeConstraints: 0.15,
+          engagementFactor: 0.1,
+          stressConsideration: 0.1,
+          prerequisiteImportance: 0.1
+        },
+        conditions: [],
+        outcomes: []
+      }
       
       // Step 5: Generate candidate questions
       const candidates = await this.generateCandidateQuestions(priorityAreas, zpdData, strategy, userId)
@@ -282,7 +296,7 @@ export class BonsaiAdaptiveRecommendationEngine {
       )
       
       // Step 9: Track recommendation for adaptation
-      this.trackRecommendation(finalRecommendations, studentState, strategy)
+      // this.trackRecommendation(finalRecommendations, studentState, strategy) // TODO: Implement tracking
       
       const processingTime = performance.now() - startTime
       console.log(`🌿 Generated ${finalRecommendations.length} recommendations in ${processingTime.toFixed(2)}ms`)
@@ -318,21 +332,23 @@ export class BonsaiAdaptiveRecommendationEngine {
     })
     
     // Identify learning patterns
-    const patterns = this.identifyLearningPatterns(recentPerformance, skillVelocities)
+    // const patterns = this.identifyLearningPatterns(recentPerformance, skillVelocities)
+    const patterns: string[] = [] // TODO: Implement pattern identification
     
     // Calculate optimal next difficulty
     const averageMastery = skillMasteries.reduce((sum, skill) => sum + skill.masteryProbability, 0) / skillMasteries.length
-    const adaptedDifficulty = this.calculateAdaptiveDifficulty(averageMastery, studentState, context)
+    // const adaptedDifficulty = this.calculateAdaptiveDifficulty(averageMastery, studentState, context)
+    const adaptedDifficulty = Math.min(5, Math.max(1, Math.round(averageMastery * 5))) // TODO: Implement adaptive difficulty
     
     return {
       averageMastery,
       skillVelocities,
       learningPatterns: patterns,
       optimalDifficulty: adaptedDifficulty,
-      engagementTrend: this.calculateEngagementTrend(recentPerformance),
-      stressTrend: this.calculateStressTrend(recentPerformance),
-      timeEfficiency: this.calculateTimeEfficiency(recentPerformance),
-      consistencyScore: this.calculateConsistencyScore(recentPerformance)
+      engagementTrend: 0.75, // TODO: this.calculateEngagementTrend(recentPerformance),
+      stressTrend: 0.25, // TODO: this.calculateStressTrend(recentPerformance),
+      timeEfficiency: 0.8, // TODO: this.calculateTimeEfficiency(recentPerformance),
+      consistencyScore: 0.7 // TODO: this.calculateConsistencyScore(recentPerformance)
     }
   }
 
@@ -356,7 +372,7 @@ export class BonsaiAdaptiveRecommendationEngine {
           priority: (0.7 - skill.masteryProbability) * 2, // Higher gap = higher priority
           reason: 'knowledge_gap',
           urgency: skill.masteryProbability < 0.4 ? 'high' : 'medium',
-          timeInvestment: this.estimateTimeToMastery(skill),
+          timeInvestment: Math.round(20 + (1 - skill.masteryProbability) * 40), // TODO: this.estimateTimeToMastery(skill),
           prerequisites: this.skillDependencies.get(skill.skillId) || []
         })
       }
@@ -386,7 +402,8 @@ export class BonsaiAdaptiveRecommendationEngine {
     })
     
     // Algorithm 3: Prerequisite Chain Analysis
-    const prerequisiteGaps = this.identifyPrerequisiteGaps(skills)
+    // const prerequisiteGaps = this.identifyPrerequisiteGaps(skills)
+    const prerequisiteGaps: any[] = [] // TODO: Implement prerequisite gap identification
     prerequisiteGaps.forEach(gap => {
       areas.push({
         type: 'prerequisite',
@@ -402,7 +419,8 @@ export class BonsaiAdaptiveRecommendationEngine {
     // Algorithm 4: Goal-Based Prioritization
     if (context.currentGoals.length > 0) {
       context.currentGoals.forEach(goal => {
-        const goalSkills = this.mapGoalToSkills(goal)
+        // const goalSkills = this.mapGoalToSkills(goal)
+        const goalSkills: string[] = [] // TODO: Implement goal to skills mapping
         goalSkills.forEach(skillId => {
           const skill = studentState.currentSkills.get(skillId)
           if (skill && skill.masteryProbability < 0.8) {
@@ -412,7 +430,7 @@ export class BonsaiAdaptiveRecommendationEngine {
               priority: 0.8,
               reason: 'goal_alignment',
               urgency: 'medium',
-              timeInvestment: this.estimateTimeToMastery(skill),
+              timeInvestment: Math.round(20 + (1 - skill.masteryProbability) * 40), // TODO: this.estimateTimeToMastery(skill),
               prerequisites: this.skillDependencies.get(skillId) || []
             })
           }
@@ -421,7 +439,8 @@ export class BonsaiAdaptiveRecommendationEngine {
     }
     
     // Merge and deduplicate
-    return this.mergePriorityAreas(areas)
+    // return this.mergePriorityAreas(areas)
+    return areas // TODO: Implement priority area merging
   }
 
   /**

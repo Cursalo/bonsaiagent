@@ -21,12 +21,6 @@ import {
   Globe,
   Zap
 } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
 interface SkillMasteryGridProps {
   skills: {
@@ -372,7 +366,7 @@ export function SkillMasteryGrid({ skills, onSkillClick }: SkillMasteryGridProps
   }
 
   return (
-    <TooltipProvider>
+    <div>
       <div className="space-y-6">
         {/* Header Controls */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -471,58 +465,30 @@ export function SkillMasteryGrid({ skills, onSkillClick }: SkillMasteryGridProps
                     
                     {/* Skill Metrics */}
                     <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <div className="flex items-center space-x-1">
-                            <Target className="h-3 w-3" />
-                            <span>{skill.questionsAnswered}</span>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Questions Answered</p>
-                        </TooltipContent>
-                      </Tooltip>
+                      <div className="flex items-center space-x-1" title="Questions Answered">
+                        <Target className="h-3 w-3" />
+                        <span>{skill.questionsAnswered}</span>
+                      </div>
                       
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="h-3 w-3" />
-                            <span>{skill.timeSpent}m</span>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Time Spent</p>
-                        </TooltipContent>
-                      </Tooltip>
+                      <div className="flex items-center space-x-1" title="Time Spent">
+                        <Clock className="h-3 w-3" />
+                        <span>{skill.timeSpent}m</span>
+                      </div>
                     </div>
                     
                     {/* Bayesian Knowledge Tracing Data */}
                     <div className="border-t pt-2 space-y-1">
                       <div className="text-xs text-muted-foreground">BKT Analytics</div>
                       <div className="grid grid-cols-2 gap-2 text-xs">
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <div>
-                              <span className="text-muted-foreground">Learn Rate:</span>
-                              <span className="ml-1 font-medium">{Math.round(skill.bayesianData.learnRate * 100)}%</span>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Rate of learning new concepts</p>
-                          </TooltipContent>
-                        </Tooltip>
+                        <div title="Rate of learning new concepts">
+                          <span className="text-muted-foreground">Learn Rate:</span>
+                          <span className="ml-1 font-medium">{Math.round(skill.bayesianData.learnRate * 100)}%</span>
+                        </div>
                         
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <div>
-                              <span className="text-muted-foreground">Forget Rate:</span>
-                              <span className="ml-1 font-medium">{Math.round(skill.bayesianData.forgetRate * 100)}%</span>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>Rate of forgetting concepts</p>
-                          </TooltipContent>
-                        </Tooltip>
+                        <div title="Rate of forgetting concepts">
+                          <span className="text-muted-foreground">Forget Rate:</span>
+                          <span className="ml-1 font-medium">{Math.round(skill.bayesianData.forgetRate * 100)}%</span>
+                        </div>
                       </div>
                     </div>
                     
@@ -555,6 +521,6 @@ export function SkillMasteryGrid({ skills, onSkillClick }: SkillMasteryGridProps
           </Card>
         )}
       </div>
-    </TooltipProvider>
+    </div>
   );
 }

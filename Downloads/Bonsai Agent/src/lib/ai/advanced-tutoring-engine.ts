@@ -151,7 +151,7 @@ export class AdvancedTutoringEngine {
       ]
     })
 
-    const state = response.choices[0].message.content?.toLowerCase().trim()
+    const state = analysis.choices[0].message.content?.toLowerCase().trim()
     return state as any || 'optimal'
   }
 
@@ -412,5 +412,4 @@ export function createAdvancedTutoringEngine(studentProfile: StudentProfile): Ad
   return new AdvancedTutoringEngine(studentProfile)
 }
 
-// Export types for use in other components
-export type { StudentProfile, LearningContext, AdaptiveResponse }
+// Types are defined above and exported from their respective files

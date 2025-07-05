@@ -213,7 +213,7 @@ function getUserPrompt(prompt: QuestionPrompt): string {
     return `Generate a SAT Digital ${prompt.domain} question testing ${prompt.skill} at ${prompt.difficulty} difficulty level.`
   }
   
-  let fullPrompt = basePrompt
+  let fullPrompt: string = basePrompt as string
   
   if (prompt.topic) {
     fullPrompt += ` Focus specifically on: ${prompt.topic}.`

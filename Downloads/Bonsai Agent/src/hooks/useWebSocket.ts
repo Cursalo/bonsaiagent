@@ -80,7 +80,7 @@ export function useWebSocket(config: WebSocketConfig, options: UseWebSocketOptio
     if (client) {
       const updateStatus = () => {
         setIsConnected(client.isConnected);
-        setConnectionStatus(client.status || 'disconnected');
+        setConnectionStatus(client.isConnected ? 'connected' : 'disconnected');
       };
 
       // Check status periodically
@@ -174,12 +174,12 @@ export function useExistingWebSocket(): UseWebSocketReturn | null {
     if (existingClient) {
       setClient(existingClient);
       setIsConnected(existingClient.isConnected);
-      setConnectionStatus(existingClient.status || 'disconnected');
+      setConnectionStatus(existingClient.isConnected ? 'connected' : 'disconnected');
 
       // Monitor connection status
       const interval = setInterval(() => {
         setIsConnected(existingClient.isConnected);
-        setConnectionStatus(existingClient.status || 'disconnected');
+        setConnectionStatus(existingClient.isConnected ? 'connected' : 'disconnected');
       }, 1000);
 
       return () => clearInterval(interval);
@@ -218,11 +218,11 @@ export function useWebSocketStatus(): {
     if (client) {
       setHasClient(true);
       setIsConnected(client.isConnected);
-      setStatus(client.status || 'disconnected');
+      setStatus(client.isConnected ? 'connected' : 'disconnected');
 
       const interval = setInterval(() => {
         setIsConnected(client.isConnected);
-        setStatus(client.status || 'disconnected');
+        setStatus(client.isConnected ? 'connected' : 'disconnected');
       }, 1000);
 
       return () => clearInterval(interval);

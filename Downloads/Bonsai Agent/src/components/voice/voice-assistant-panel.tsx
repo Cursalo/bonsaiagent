@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Tooltip } from '@/components/ui/tooltip';
 import { useVoiceAssistant } from '@/hooks/voice/useVoiceAssistant';
 import { SessionContext, StudentProfile } from '@/lib/voice/voice-types';
 import { VoiceStatusIndicator } from './voice-status-indicator';
@@ -186,32 +185,25 @@ export const VoiceAssistantPanel: React.FC<VoiceAssistantPanelProps> = ({
 
           <div className="flex items-center space-x-1">
             {/* Settings button */}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowSettings(!showSettings)}
-                  >
-                    <Settings className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Voice settings</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowSettings(!showSettings)}
+              title="Voice settings"
+            >
+              <Settings className="h-4 w-4" />
+            </Button>
             
             {/* Stop session button */}
             {session && (
-              <Tooltip content="Stop session">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleStopSession}
-                >
-                  <Square className="h-4 w-4" />
-                </Button>
-              </Tooltip>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleStopSession}
+                title="Stop session"
+              >
+                <Square className="h-4 w-4" />
+              </Button>
             )}
           </div>
         </div>
@@ -243,62 +235,60 @@ export const VoiceAssistantPanel: React.FC<VoiceAssistantPanelProps> = ({
         {/* Main controls */}
         <div className="flex items-center justify-center space-x-2">
           {/* Microphone control */}
-          <Tooltip content={state.isListening ? "Stop listening" : "Start listening"}>
-            <Button
-              variant={state.isListening ? "destructive" : "default"}
-              size={compact ? "sm" : "default"}
-              onClick={state.isListening ? handleStopListening : handleStartListening}
-              disabled={!session || state.isPaused}
-            >
-              {state.isListening ? (
-                <MicOff className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
-              ) : (
-                <Mic className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
-              )}
-              {!compact && (
-                <span className="ml-2">
-                  {state.isListening ? 'Stop' : 'Listen'}
-                </span>
-              )}
-            </Button>
-          </Tooltip>
+          <Button
+            variant={state.isListening ? "destructive" : "default"}
+            size={compact ? "sm" : "default"}
+            onClick={state.isListening ? handleStopListening : handleStartListening}
+            disabled={!session || state.isPaused}
+            title={state.isListening ? "Stop listening" : "Start listening"}
+          >
+            {state.isListening ? (
+              <MicOff className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
+            ) : (
+              <Mic className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
+            )}
+            {!compact && (
+              <span className="ml-2">
+                {state.isListening ? 'Stop' : 'Listen'}
+              </span>
+            )}
+          </Button>
+          
 
           {/* Session control */}
           {session && (
-            <Tooltip content={state.isPaused ? "Resume session" : "Pause session"}>
-              <Button
-                variant="outline"
-                size={compact ? "sm" : "default"}
-                onClick={handleToggleSession}
-              >
-                {state.isPaused ? (
-                  <Play className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
-                ) : (
-                  <Pause className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
-                )}
-                {!compact && (
-                  <span className="ml-2">
-                    {state.isPaused ? 'Resume' : 'Pause'}
-                  </span>
-                )}
-              </Button>
-            </Tooltip>
+            <Button
+              variant="outline"
+              size={compact ? "sm" : "default"}
+              onClick={handleToggleSession}
+              title={state.isPaused ? "Resume session" : "Pause session"}
+            >
+              {state.isPaused ? (
+                <Play className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
+              ) : (
+                <Pause className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
+              )}
+              {!compact && (
+                <span className="ml-2">
+                  {state.isPaused ? 'Resume' : 'Pause'}
+                </span>
+              )}
+            </Button>
           )}
 
           {/* Speaker control */}
-          <Tooltip content={state.isSpeaking ? "Stop speaking" : `Volume: ${Math.round(settings.volume * 100)}%`}>
-            <Button
-              variant={state.isSpeaking ? "destructive" : "outline"}
-              size={compact ? "sm" : "default"}
-              onClick={state.isSpeaking ? stopSpeaking : undefined}
-            >
-              {settings.volume === 0 ? (
-                <VolumeX className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
-              ) : (
-                <Volume2 className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
-              )}
-            </Button>
-          </Tooltip>
+          <Button
+            variant={state.isSpeaking ? "destructive" : "outline"}
+            size={compact ? "sm" : "default"}
+            onClick={state.isSpeaking ? stopSpeaking : undefined}
+            title={state.isSpeaking ? "Stop speaking" : `Volume: ${Math.round(settings.volume * 100)}%`}
+          >
+            {settings.volume === 0 ? (
+              <VolumeX className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
+            ) : (
+              <Volume2 className={`${compact ? 'h-3 w-3' : 'h-4 w-4'}`} />
+            )}
+          </Button>
         </div>
 
         {/* Manual command input */}

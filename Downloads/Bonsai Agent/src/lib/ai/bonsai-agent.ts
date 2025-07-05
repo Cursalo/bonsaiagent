@@ -361,7 +361,7 @@ export class BonsaiAgent {
     this.injectBluebookMonitor()
     
     // Start screen analysis
-    this.startScreenAnalysis()
+    // this.startScreenAnalysis() // TODO: Implement screen analysis
     
     // Initialize real-time assistance overlay
     this.createAssistanceOverlay()
@@ -744,7 +744,7 @@ You have access to real-time screen analysis, student performance history, and a
       sessionId: this.sessionId,
       questionsAttempted: this.realTimeContext.questionsAttempted,
       totalTime: this.realTimeContext.totalTime,
-      strugglingTopics: [...new Set(this.realTimeContext.strugglingTopics)],
+      strugglingTopics: Array.from(new Set(this.realTimeContext.strugglingTopics)),
       currentLevel: this.studentProfile.currentLevel,
       confidence: this.studentProfile.confidence
     }

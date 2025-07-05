@@ -127,15 +127,16 @@ export const VoiceStatusIndicator: React.FC<VoiceStatusIndicatorProps> = ({
     <div className={`flex items-center space-x-2 ${className}`}>
       {/* Primary status indicator */}
       <div className="relative">
-        <Tooltip content={primaryStatus.tooltip}>
-          <div className={`
+          <div 
+            title={primaryStatus.tooltip}
+            className={`
             rounded-full p-2 flex items-center justify-center
             ${primaryStatus.color}
             ${primaryStatus.pulse ? 'animate-pulse' : ''}
           `}>
             <PrimaryIcon className={`${iconSize} text-white`} />
           </div>
-        </Tooltip>
+        
         
         {/* Activity ring for active states */}
         {(isListening || isSpeaking || isProcessing) && (
@@ -152,9 +153,10 @@ export const VoiceStatusIndicator: React.FC<VoiceStatusIndicatorProps> = ({
           
           {/* Additional status info */}
           <div className="flex items-center space-x-1 mt-1">
-            <Tooltip content={connectionInfo.tooltip}>
-              <ConnectionIcon className={`h-3 w-3 ${connectionInfo.color}`} />
-            </Tooltip>
+              <div title={connectionInfo.tooltip}>
+                <ConnectionIcon className={`h-3 w-3 ${connectionInfo.color}`} />
+              </div>
+            
             
             {isWakeWordActive && !isListening && (
               <Badge variant="secondary" className="text-xs">
@@ -169,15 +171,16 @@ export const VoiceStatusIndicator: React.FC<VoiceStatusIndicatorProps> = ({
       {!showLabels && (
         <div className="flex items-center space-x-1">
           {/* Connection status */}
-          <Tooltip content={connectionInfo.tooltip}>
-            <ConnectionIcon className={`h-3 w-3 ${connectionInfo.color}`} />
-          </Tooltip>
+            <div title={connectionInfo.tooltip}>
+              <ConnectionIcon className={`h-3 w-3 ${connectionInfo.color}`} />
+            </div>
+          
           
           {/* Wake word indicator */}
           {isWakeWordActive && !isListening && (
-            <Tooltip content="Wake word detection active">
+            
               <div className="h-2 w-2 bg-yellow-400 rounded-full"></div>
-            </Tooltip>
+            
           )}
         </div>
       )}
