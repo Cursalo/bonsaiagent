@@ -24,7 +24,7 @@ interface SpeechRecognitionConfig {
 }
 
 export class SpeechRecognitionEngine {
-  private recognition: SpeechRecognition | null = null;
+  private recognition: any | null = null;
   private isSupported: boolean = false;
   private isListening: boolean = false;
   private config: SpeechRecognitionConfig;
@@ -74,7 +74,7 @@ export class SpeechRecognitionEngine {
 
   private initializeSpeechRecognition(): void {
     // Check for browser support
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     
     if (!SpeechRecognition) {
       console.warn('Speech recognition not supported in this browser');
@@ -339,7 +339,7 @@ export const createSpeechRecognitionEngine = (config?: Partial<SpeechRecognition
 };
 
 export const isSpeechRecognitionSupported = (): boolean => {
-  return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+  return !!((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
 };
 
 export const getSupportedLanguages = (): string[] => {

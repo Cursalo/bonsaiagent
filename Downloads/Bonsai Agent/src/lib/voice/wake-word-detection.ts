@@ -70,7 +70,7 @@ export class WakeWordDetector {
 
   private initializeAudioProcessing(): void {
     // Check for Web Audio API support
-    if (!window.AudioContext && !window.webkitAudioContext) {
+    if (!window.AudioContext && !(window as any).webkitAudioContext) {
       console.warn('Web Audio API not supported');
       this.isSupported = false;
       return;
@@ -181,7 +181,7 @@ export class WakeWordDetector {
 
     try {
       // Initialize audio context
-      this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
+      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({
         sampleRate: this.SAMPLE_RATE,
         latencyHint: 'interactive'
       });
@@ -413,7 +413,7 @@ export class WakeWordDetector {
   }
 
   private detectWakeWords(features: AudioFeatures): void {
-    for (const [keyword, model] of this.models) {
+    for (const [keyword, model] of Array.from(this.models.entries())) {
       if (!model.isLoaded) continue;
 
       const confidence = this.calculateConfidence(features, model);
@@ -506,7 +506,7 @@ export class WakeWordDetector {
     this.options.sensitivity = Math.max(0, Math.min(1, sensitivity));
     
     // Update all models
-    for (const model of this.models.values()) {
+    for (const model of Array.from(this.models.values())) {
       model.sensitivity = this.options.sensitivity;
     }
   }
@@ -543,6 +543,6 @@ export const createWakeWordDetector = (options?: Partial<WakeWordDetectionOption
 };
 
 export const isWakeWordSupported = (): boolean => {
-  return !!(window.AudioContext || window.webkitAudioContext) && 
+  return !!(window.AudioContext || (window as any).webkitAudioContext) && 
          !!navigator.mediaDevices?.getUserMedia;
 };

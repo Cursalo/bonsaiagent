@@ -276,7 +276,7 @@ export class AuthManager {
    */
   cleanupRateLimits(): void {
     const now = Date.now();
-    for (const [userId, limit] of this.rateLimitMap.entries()) {
+    for (const [userId, limit] of Array.from(this.rateLimitMap.entries())) {
       if (now > limit.resetTime) {
         this.rateLimitMap.delete(userId);
       }

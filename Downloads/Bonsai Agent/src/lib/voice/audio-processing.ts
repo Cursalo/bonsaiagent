@@ -231,7 +231,7 @@ export class AudioProcessingEngine {
     let processedBuffer = new Float32Array(inputBuffer);
 
     // Apply each enabled processor
-    for (const processor of this.processors.values()) {
+    for (const processor of Array.from(this.processors.values())) {
       if (processor.enabled) {
         processedBuffer = processor.process(processedBuffer);
       }
@@ -618,7 +618,7 @@ export class AudioProcessingEngine {
 
   public dispose(): void {
     // Dispose all processors
-    for (const processor of this.processors.values()) {
+    for (const processor of Array.from(this.processors.values())) {
       processor.dispose();
     }
     this.processors.clear();
@@ -642,7 +642,7 @@ export const createAudioProcessingEngine = (options?: Partial<AudioProcessingOpt
 };
 
 export const isAudioProcessingSupported = (): boolean => {
-  return !!(window.AudioContext || window.webkitAudioContext);
+  return !!(window.AudioContext || (window as any).webkitAudioContext);
 };
 
 export const getOptimalAudioSettings = (): AudioProcessingOptions => {

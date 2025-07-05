@@ -66,23 +66,23 @@ export type {
 } from './types';
 
 // React hooks for WebSocket functionality
-export { useWebSocket, useExistingWebSocket, useWebSocketStatus } from '../hooks/useWebSocket';
-export { 
-  useRealTimeRecommendations, 
-  useQuestionRecommendations, 
-  useStrategyRecommendations, 
-  useResourceRecommendations 
-} from '../hooks/useRealTimeRecommendations';
-export { 
-  useRealTimeAnalytics, 
-  usePerformanceTracking, 
-  useProgressTracking 
-} from '../hooks/useRealTimeAnalytics';
-export { 
-  useLiveCoaching, 
-  useQuestionCoaching, 
-  useCoachingStats 
-} from '../hooks/useLiveCoaching';
+// export { useWebSocket, useExistingWebSocket, useWebSocketStatus } from '../hooks/useWebSocket';
+// export { 
+//   useRealTimeRecommendations, 
+//   useQuestionRecommendations, 
+//   useStrategyRecommendations, 
+//   useResourceRecommendations 
+// } from '../hooks/useRealTimeRecommendations';
+// export { 
+//   useRealTimeAnalytics, 
+//   usePerformanceTracking, 
+//   useProgressTracking 
+// } from '../hooks/useRealTimeAnalytics';
+// export { 
+//   useLiveCoaching, 
+//   useQuestionCoaching, 
+//   useCoachingStats 
+// } from '../hooks/useLiveCoaching';
 
 // Utility functions for common WebSocket operations
 export const WebSocketUtils = {
@@ -94,7 +94,7 @@ export const WebSocketUtils = {
     sessionId?: string;
     token: string;
     websocketUrl?: string;
-  }): WebSocketConfig => {
+  }): any => {
     return {
       url: params.websocketUrl || process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'ws://localhost:3001',
       auth: {
@@ -130,7 +130,7 @@ export const WebSocketUtils = {
   /**
    * Get connection status display text
    */
-  getStatusText: (status: ConnectionStatus): string => {
+  getStatusText: (status: any): string => {
     switch (status) {
       case 'connecting':
         return 'Connecting...';
@@ -150,7 +150,7 @@ export const WebSocketUtils = {
   /**
    * Get connection status color class
    */
-  getStatusColor: (status: ConnectionStatus): string => {
+  getStatusColor: (status: any): string => {
     switch (status) {
       case 'connected':
         return 'text-green-500';
@@ -183,7 +183,7 @@ export const WebSocketUtils = {
   /**
    * Validate WebSocket configuration
    */
-  validateConfig: (config: WebSocketConfig): { valid: boolean; errors: string[] } => {
+  validateConfig: (config: any): { valid: boolean; errors: string[] } => {
     const errors: string[] = [];
 
     if (!config.url) {
@@ -276,7 +276,7 @@ export const WebSocketErrors = {
   /**
    * Create a standardized WebSocket error
    */
-  createError: (code: string, message: string, details?: any): ErrorData => {
+  createError: (code: string, message: string, details?: any): any => {
     return {
       code,
       message,
@@ -305,7 +305,7 @@ export const WebSocketErrors = {
   /**
    * Check if an error is recoverable
    */
-  isRecoverable: (error: ErrorData): boolean => {
+  isRecoverable: (error: any): boolean => {
     const recoverableErrors = [
       'CONNECTION_FAILED',
       'RATE_LIMIT',

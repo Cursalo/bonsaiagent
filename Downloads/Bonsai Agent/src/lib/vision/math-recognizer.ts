@@ -233,7 +233,7 @@ export class BonsaiMathRecognizer {
       }
 
       // Configure MathJax
-      window.MathJax = {
+      (window as any).MathJax = {
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
           displayMath: [['$$', '$$'], ['\\[', '\\]']],
@@ -327,7 +327,7 @@ export class BonsaiMathRecognizer {
     // Find LaTeX expressions
     this.latexPatterns.forEach(pattern => {
       const matches = text.matchAll(pattern)
-      for (const match of matches) {
+      for (const match of Array.from(matches)) {
         const latex = match[0]
         const plainText = this.latexToPlainText(latex)
         
@@ -348,7 +348,7 @@ export class BonsaiMathRecognizer {
     })
 
     // Find mathematical symbols and convert to LaTeX
-    for (const [symbol, latex] of this.mathSymbols) {
+    for (const [symbol, latex] of Array.from(this.mathSymbols.entries())) {
       if (text.includes(symbol)) {
         expressions.push({
           id: `symbol_${expressionId++}`,
@@ -370,7 +370,7 @@ export class BonsaiMathRecognizer {
     const mathPattern = /(\d+(?:\.\d+)?|\b[a-z]\b|\d*[a-z]\^?\d*|\d+\s*[+\-×÷]\s*\d+)/gi
     const mathMatches = text.matchAll(mathPattern)
     
-    for (const match of mathMatches) {
+    for (const match of Array.from(mathMatches)) {
       const expression = match[0]
       if (expression.length > 1) { // Skip single characters unless they're variables
         expressions.push({
@@ -518,7 +518,7 @@ export class BonsaiMathRecognizer {
     const variablePattern = /\b[a-z]\b/g
     const matches = expression.matchAll(variablePattern)
     
-    for (const match of matches) {
+    for (const match of Array.from(matches)) {
       variables.add(match[0])
     }
     
@@ -533,7 +533,7 @@ export class BonsaiMathRecognizer {
     const numberPattern = /\b\d+(?:\.\d+)?\b/g
     const matches = expression.matchAll(numberPattern)
     
-    for (const match of matches) {
+    for (const match of Array.from(matches)) {
       constants.add(parseFloat(match[0]))
     }
     
@@ -627,7 +627,7 @@ export class BonsaiMathRecognizer {
       }
     })
     
-    return [...new Set(constraints)]
+    return Array.from(new Set(constraints))
   }
 
   /**
@@ -654,7 +654,7 @@ export class BonsaiMathRecognizer {
   }
 
   private identifyFunctionType(text: string): FunctionInfo['type'] {
-    for (const [type, pattern] of this.functionPatterns) {
+    for (const [type, pattern] of Array.from(this.functionPatterns.entries())) {
       if (pattern.test(text)) {
         return type as FunctionInfo['type']
       }

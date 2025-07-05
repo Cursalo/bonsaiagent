@@ -550,7 +550,9 @@ export class BonsaiRecommendationService {
   // Helper methods for building learning context and enhancing recommendations
   private buildLearningContext(request: RecommendationRequest, session: ActiveSession): LearningContext {
     return {
-      sessionType: request.context.testType,
+      sessionType: request.context.testType === 'full_test' ? 'test_prep' : 
+                   request.context.testType === 'section_practice' ? 'practice' : 
+                   request.context.testType as 'practice' | 'review' | 'test_prep' | 'diagnostic',
       timeAvailable: request.timeConstraints.sectionTimeRemaining,
       currentGoals: this.extractCurrentGoals(request, session),
       stressLevel: session.studentState.stressLevel,

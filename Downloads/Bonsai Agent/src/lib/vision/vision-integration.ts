@@ -576,7 +576,7 @@ export class BonsaiVisionIntegration {
       objectives.push(`Develop ${skill.name.toLowerCase()} skills`)
     })
 
-    return [...new Set(objectives)] // Remove duplicates
+    return Array.from(new Set(objectives)) // Remove duplicates
   }
 
   /**

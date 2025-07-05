@@ -234,7 +234,7 @@ export class BonsaiRecommendationStrategies implements StrategySelector {
         type: 'spaced_repetition',
         parameters: {
           forgettingRate: 0.2,
-          reviewIntervals: [1, 3, 7, 14, 30],
+          reviewIntervals: '1,3,7,14,30',
           retentionTarget: 0.9,
           difficultyDecay: 0.1
         },
@@ -379,7 +379,7 @@ export class BonsaiRecommendationStrategies implements StrategySelector {
         name: 'Multi-Strategy Ensemble',
         type: 'performance_adaptive',
         parameters: {
-          strategyWeights: [0.3, 0.25, 0.2, 0.15, 0.1],
+          strategyWeights: '0.3,0.25,0.2,0.15,0.1',
           adaptationWindow: 10,
           performanceThreshold: 0.7,
           ensembleMethod: 'weighted_voting'
@@ -419,7 +419,7 @@ export class BonsaiRecommendationStrategies implements StrategySelector {
     const strategyScores = new Map<string, number>()
     
     // Score each strategy
-    for (const [name, strategy] of this.strategies) {
+    for (const [name, strategy] of Array.from(this.strategies.entries())) {
       let score = 0
       
       // Evaluate strategy conditions
@@ -724,7 +724,7 @@ export class BonsaiRecommendationStrategies implements StrategySelector {
     return personalizedStrategy
   }
 
-  private calculateNextReviewInterval(skill: SkillMastery): number {
+  private calculateNextReviewInterval(skill: any): number {
     // Simple spaced repetition calculation
     const attempts = skill.attempts
     const accuracy = skill.correctAttempts / Math.max(1, attempts)

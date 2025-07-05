@@ -315,10 +315,9 @@ export class BonsaiScreenshotCapture {
       // Request screen capture
       const stream = await navigator.mediaDevices.getDisplayMedia({
         video: {
-          mediaSource: 'screen',
           width: { ideal: options.performance?.maxWidth || 1920 },
           height: { ideal: options.performance?.maxHeight || 1080 }
-        }
+        } as any
       })
 
       // Create video element to capture frame
@@ -756,14 +755,16 @@ export class BonsaiScreenshotCapture {
 
   private optimizeElementForCapture(element: HTMLElement, options: CaptureOptions): void {
     // Remove excluded child elements
-    options.excludeElements?.forEach(selector => {
-      const elements = element.querySelectorAll(selector)
-      elements.forEach(el => el.remove())
-    })
+    if (options.excludeElements) {
+      options.excludeElements.forEach(selector => {
+        const elements = element.querySelectorAll(selector)
+        Array.from(elements).forEach(el => el.remove())
+      })
+    }
     
     // Optimize styles for capture
-    element.style.fontSmooth = 'always'
-    element.style.webkitFontSmoothing = 'antialiased'
+    (element.style as any).fontSmooth = 'always';
+    (element.style as any).webkitFontSmoothing = 'antialiased'
   }
 
   private wrapText(text: string, maxWidth: number): string[] {
@@ -797,7 +798,7 @@ export class BonsaiScreenshotCapture {
   }
 
   private isExtensionContext(): boolean {
-    return typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id
+    return typeof (globalThis as any).chrome !== 'undefined' && (globalThis as any).chrome.runtime && (globalThis as any).chrome.runtime.id
   }
 
   private generateCacheKey(options: CaptureOptions): string {

@@ -216,7 +216,7 @@ export class BonsaiWebSocketServer {
     
     setInterval(() => {
       const now = Date.now();
-      for (const [key, limit] of this.rateLimitMap.entries()) {
+      for (const [key, limit] of Array.from(this.rateLimitMap.entries())) {
         if (now > limit.resetTime) {
           this.rateLimitMap.delete(key);
         }
@@ -285,7 +285,7 @@ export class BonsaiWebSocketServer {
   }
 
   private async processAllQueuedMessages() {
-    for (const [userId, messages] of this.messageQueue.entries()) {
+    for (const [userId, messages] of Array.from(this.messageQueue.entries())) {
       const sockets = await this.io.in(`user:${userId}`).fetchSockets();
       if (sockets.length > 0) {
         await this.processQueuedMessages(userId, sockets[0]);

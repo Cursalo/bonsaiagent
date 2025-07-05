@@ -565,7 +565,7 @@ export class VoiceAssistant {
         metadata: {
           questionId: this.sessionContext?.questionNumber.toString(),
           skillArea: command.parameters.skillArea,
-          depth: command.parameters.depth || 'medium'
+          difficulty: command.parameters.depth || 'medium'
         }
       };
 
@@ -624,7 +624,7 @@ export class VoiceAssistant {
       type: 'instruction',
       priority: 'high',
       metadata: {
-        timeRemaining: this.sessionContext.timeRemaining
+        strategy: `timeRemaining:${this.sessionContext.timeRemaining}`
       }
     };
   }
@@ -695,7 +695,7 @@ export class VoiceAssistant {
       type: 'encouragement',
       priority: 'high',
       metadata: {
-        confusionLevel: level
+        strategy: `confusionLevel:${level}`
       }
     };
   }
@@ -720,9 +720,7 @@ export class VoiceAssistant {
       type: 'feedback',
       priority: 'medium',
       metadata: {
-        successRate,
-        totalCommands: commands.length,
-        totalResponses: responses.length
+        strategy: `successRate:${successRate},commands:${commands.length},responses:${responses.length}`
       }
     };
   }
@@ -734,8 +732,7 @@ export class VoiceAssistant {
       type: 'instruction',
       priority: 'medium',
       metadata: {
-        originalCommand: command.command,
-        intent: command.intent
+        strategy: `command:${command.command},intent:${command.intent}`
       }
     };
   }
@@ -884,7 +881,7 @@ export class VoiceAssistant {
         text: suggestion.message,
         type: 'instruction',
         priority: 'urgent',
-        metadata: { source: 'live_coaching' }
+        metadata: { strategy: 'live_coaching' }
       };
 
       this.executeResponse(response);
@@ -962,7 +959,7 @@ export class VoiceAssistant {
 
     const recentCommands = this.currentSession.commands.slice(-5);
     const confusionCommands = recentCommands.filter(cmd => 
-      cmd.intent === 'report_confusion' || cmd.intent === 'request_help'
+      cmd.intent === 'report_confusion' || cmd.intent === 'help'
     );
 
     return Math.max(0, 1 - (confusionCommands.length / recentCommands.length));

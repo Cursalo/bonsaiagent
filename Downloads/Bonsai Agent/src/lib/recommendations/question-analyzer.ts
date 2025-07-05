@@ -581,7 +581,7 @@ export class BonsaiQuestionAnalyzer {
     const images = element.querySelectorAll('img')
     const imageContent: ImageContent[] = []
     
-    for (const img of images) {
+    for (const img of Array.from(images)) {
       const src = img.src
       const alt = img.alt || ''
       
@@ -611,7 +611,7 @@ export class BonsaiQuestionAnalyzer {
       mathResult.expressions.forEach(expr => {
         expressions.push({
           latex: expr.latex || '',
-          description: expr.description || '',
+          description: (expr as any).description || '',
           type: expr.type as any,
           complexity: expr.complexity as any,
           domain: expr.domain || 'algebra',

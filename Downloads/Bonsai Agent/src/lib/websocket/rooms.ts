@@ -120,7 +120,7 @@ export class RoomManager {
     if (!userRoomIds) return false;
 
     // Check if any of user's rooms have active sockets
-    for (const roomId of userRoomIds) {
+    for (const roomId of Array.from(userRoomIds)) {
       const room = this.rooms.get(roomId);
       if (room && room.metadata.socketId) {
         return true;
@@ -167,7 +167,7 @@ export class RoomManager {
     const now = Date.now();
     let cleanedCount = 0;
 
-    for (const [roomId, room] of this.rooms.entries()) {
+    for (const [roomId, room] of Array.from(this.rooms.entries())) {
       if ((now - room.lastActivity) > maxAge) {
         // Remove from all tracking maps
         this.rooms.delete(roomId);
@@ -246,7 +246,7 @@ export class RoomManager {
     if (!userRoomIds) return [];
 
     const sockets = new Set<string>();
-    for (const roomId of userRoomIds) {
+    for (const roomId of Array.from(userRoomIds)) {
       const room = this.rooms.get(roomId);
       if (room && room.metadata.socketId) {
         sockets.add(room.metadata.socketId);
@@ -260,7 +260,7 @@ export class RoomManager {
    * Get user for a socket
    */
   getSocketUser(socketId: string): string | undefined {
-    for (const [roomId, room] of this.rooms.entries()) {
+    for (const [roomId, room] of Array.from(this.rooms.entries())) {
       if (room.metadata.socketId === socketId) {
         return room.userId;
       }
@@ -287,12 +287,12 @@ export class RoomManager {
     stats: ReturnType<typeof this.getRoomStats>;
   } {
     const userRoomsObj: Record<string, string[]> = {};
-    for (const [userId, roomIds] of this.userRooms.entries()) {
+    for (const [userId, roomIds] of Array.from(this.userRooms.entries())) {
       userRoomsObj[userId] = Array.from(roomIds);
     }
 
     const socketRoomsObj: Record<string, string[]> = {};
-    for (const [socketId, roomIds] of this.socketRooms.entries()) {
+    for (const [socketId, roomIds] of Array.from(this.socketRooms.entries())) {
       socketRoomsObj[socketId] = Array.from(roomIds);
     }
 
