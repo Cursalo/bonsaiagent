@@ -17,8 +17,8 @@
     "https://bluebook.collegeboard.org/*",
     "https://satsuite.collegeboard.org/*",
     "https://sat-suite.collegeboard.org/*",
-    "https://localhost:3000/*",
-    "https://*.supabase.co/*"
+    "PLACEHOLDER_SUPABASE_URL/*",
+    "https://bonsaisat.com/*"
   ],
   
   "background": {
@@ -79,8 +79,7 @@
   
   "externally_connectable": {
     "matches": [
-      "https://localhost:3000/*",
-      "https://*.vercel.app/*"
+      "https://bonsaisat.com/*"
     ]
   }
 }
