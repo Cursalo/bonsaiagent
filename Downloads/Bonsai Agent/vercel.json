@@ -1,8 +1,11 @@
 {
   "buildCommand": "cd apps/web && npm run build",
-  "outputDirectory": "apps/web/.next",
+  "outputDirectory": "apps/web/.next", 
   "framework": "nextjs",
   "installCommand": "npm install",
+  "projectSettings": {
+    "rootDirectory": "apps/web"
+  },
   "env": {
     "NEXTAUTH_SECRET": "@nextauth_secret",
     "NEXTAUTH_URL": "@nextauth_url",
