@@ -1,4 +1,4 @@
-import { supabase } from '@bonsai/database'
+import { supabase } from '@/lib/auth'
 import type { User } from '@supabase/supabase-js'
 
 export type AuthUser = User | null

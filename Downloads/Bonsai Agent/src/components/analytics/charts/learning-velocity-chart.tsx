@@ -362,7 +362,7 @@ export function LearningVelocityChart({ data, timeRange }: LearningVelocityChart
             {/* Main Chart */}
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                {chartType === 'velocity' && (
+                {chartType === 'velocity' ? (
                   <ComposedChart data={velocityData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
@@ -408,9 +408,7 @@ export function LearningVelocityChart({ data, timeRange }: LearningVelocityChart
                       label="Target"
                     />
                   </ComposedChart>
-                )}
-                
-                {chartType === 'acceleration' && (
+                ) : chartType === 'acceleration' ? (
                   <BarChart data={velocityData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
@@ -429,9 +427,7 @@ export function LearningVelocityChart({ data, timeRange }: LearningVelocityChart
                     />
                     <ReferenceLine y={0} stroke="#6b7280" />
                   </BarChart>
-                )}
-                
-                {chartType === 'efficiency' && (
+                ) : chartType === 'efficiency' ? (
                   <AreaChart data={velocityData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
@@ -460,7 +456,7 @@ export function LearningVelocityChart({ data, timeRange }: LearningVelocityChart
                       name="Focus Score"
                     />
                   </AreaChart>
-                )}
+                ) : null}
               </ResponsiveContainer>
             </div>
             

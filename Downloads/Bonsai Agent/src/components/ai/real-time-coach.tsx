@@ -157,7 +157,10 @@ export function RealTimeCoach({
           30, // days remaining
           [75, 78, 82, 85] // recent progress
         )
-        setMotivationalState(motivation)
+        setMotivationalState({
+          type: motivation.interventionType,
+          message: motivation.message
+        })
       }
 
       // Update adaptive insights

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth/config'
+import { authOptions } from '@/lib/auth/config'
 import BonsaiRecommendationService from '@/lib/recommendations/recommendation-service'
 
 /**
@@ -24,7 +24,7 @@ function getRecommendationService(): BonsaiRecommendationService {
 export async function POST(request: NextRequest) {
   try {
     // Validate session
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized - Please sign in' },
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
 // Get coaching session status and recent messages
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -204,7 +204,7 @@ export async function GET(request: NextRequest) {
 // Update coaching session configuration
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -249,7 +249,7 @@ export async function PUT(request: NextRequest) {
 // End coaching session
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Retrieve analytics data (in a real implementation, this would come from a database)
-    const analyticsData = await retrieveVoiceAnalytics(userId, sessionId, timeRange);
+    const analyticsData = await retrieveVoiceAnalytics(userId, sessionId || undefined, timeRange);
     
     return NextResponse.json({
       success: true,

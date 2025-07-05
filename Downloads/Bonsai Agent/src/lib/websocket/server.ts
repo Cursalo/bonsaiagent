@@ -190,7 +190,8 @@ export class BonsaiWebSocketServer {
       console.log(`🔌 Disconnection: ${socket.id} - Reason: ${reason}`);
       
       try {
-        const roomId = `user:${auth.userId}`;\n        await this.roomManager.leaveRoom(roomId, socket.id);
+        const roomId = `user:${auth.userId}`;
+        await this.roomManager.leaveRoom(roomId, socket.id);
         
         // Broadcast disconnect to other clients
         socket.to(roomId).emit('user:disconnect', {

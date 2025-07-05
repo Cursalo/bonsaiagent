@@ -17,6 +17,7 @@ export interface StudentProfile {
   memoryRetentionCurve: number[]
   currentStressLevel: number // 1-10 scale
   timeOfDayPerformance: Record<string, number>
+  targetScore?: number // SAT target score
 }
 
 export interface LearningContext {

@@ -19,6 +19,7 @@ import {
   RotateCcw,
   Share2,
   Download,
+  BarChart3,
 } from 'lucide-react'
 
 // Mock results data

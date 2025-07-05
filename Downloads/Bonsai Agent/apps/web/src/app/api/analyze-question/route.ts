@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth/config'
+import { authOptions } from '@/lib/auth/config'
 import BonsaiRecommendationService from '@/lib/recommendations/recommendation-service'
 
 /**
@@ -23,7 +23,7 @@ function getRecommendationService(): BonsaiRecommendationService {
 export async function POST(request: NextRequest) {
   try {
     // Validate session
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized - Please sign in' },
@@ -103,7 +103,7 @@ export async function OPTIONS(request: NextRequest) {
 }
 
 // Helper function to create a virtual DOM element from question data
-function createVirtualElement(questionData: any): HTMLElement {
+function createVirtualElement(questionData: any): any {
   // In a real implementation, this would properly reconstruct the DOM element
   // from the data sent by the browser extension
   
@@ -127,7 +127,7 @@ function createVirtualElement(questionData: any): HTMLElement {
     id: questionData.id || '',
     className: questionData.className || '',
     tagName: questionData.tagName || 'DIV'
-  } as HTMLElement
+  }
 
   return element
 }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
-import { authConfig } from '@/lib/auth/config'
+import { authOptions } from '@/lib/auth/config'
 import BonsaiRecommendationService, { 
   RecommendationRequest, 
   RecommendationResponse 
@@ -27,7 +27,7 @@ function getRecommendationService(): BonsaiRecommendationService {
 export async function POST(request: NextRequest) {
   try {
     // Validate session
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized - Please sign in' },
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authOptions)
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

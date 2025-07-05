@@ -13,22 +13,16 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user, isLoading } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!user) {
       router.push('/auth/signin')
     }
-  }, [user, isLoading, router])
+  }, [user, router])
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    )
-  }
+  // Remove loading state since we're using NextAuth session
 
   if (!user) {
     return null
