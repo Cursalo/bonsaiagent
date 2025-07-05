@@ -1,13 +1,21 @@
 'use client'
 
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChange, type AuthUser } from '@/lib/auth'
-import { getUserProfile } from '@bonsai/database'
-import type { User } from '@bonsai/shared'
+import { onAuthStateChange, type AuthUser, supabase } from '@/lib/auth'
+
+interface UserProfile {
+  id: string
+  email: string
+  full_name?: string
+  avatar_url?: string
+  subscription_tier?: string
+  created_at: string
+  updated_at: string
+}
 
 interface AuthContextType {
   user: AuthUser
-  profile: User | null
+  profile: UserProfile | null
   loading: boolean
   refreshProfile: () => Promise<void>
 }
@@ -16,13 +24,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser>(null)
-  const [profile, setProfile] = useState<User | null>(null)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
 
   const refreshProfile = async () => {
     if (user?.id) {
       try {
-        const userProfile = await getUserProfile(user.id)
+        const { data: userProfile, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single()
+        
+        if (error) throw error
         setProfile(userProfile)
       } catch (error) {
         console.error('Error fetching user profile:', error)
