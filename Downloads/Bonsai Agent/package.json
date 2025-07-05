@@ -9,8 +9,9 @@
   ],
   "packageManager": "pnpm@8.15.0",
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
+    "build": "cd apps/web && npm run build",
+    "dev": "cd apps/web && npm run dev",
+    "start": "cd apps/web && npm run start",
     "lint": "turbo lint",
     "lint:fix": "turbo lint -- --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
@@ -82,6 +83,11 @@
     "extension:build": "cd apps/browser-extension && npm run build:all",
     "extension:test": "cd apps/browser-extension && npm run test:all",
     "extension:publish": "cd apps/browser-extension && npm run publish:all"
+  },
+  "dependencies": {
+    "next": "^14.1.0",
+    "react": "^18.2.0", 
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@turbo/gen": "^1.12.4",
